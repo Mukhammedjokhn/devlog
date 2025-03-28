@@ -1,26 +1,27 @@
 @import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+    --bg-pattern: url("/pattern-light.png");
+}
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+    --font-poppins: "Poppins", sans-serif;
+    --border-color: #666;
+    --background: #f3f3f3;
+    --foreground: #111;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+.dark {
+    --background: #111;
+    --foreground: #f3f3f3;
+    --border-color: #333;
+    --bg-pattern: url("/pattern.png");
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+    font-family: var(--font-poppins);
+    background: var(--bg-pattern);
 }
