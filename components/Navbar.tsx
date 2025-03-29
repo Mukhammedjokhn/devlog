@@ -1,42 +1,29 @@
 "use client";
-
+import { useEffect, useState } from "react";
 import Image from "next/image";
-import { ThemeToggle } from "./ThemeToggle";
+import ThemeToggle from "./ThemeToggle";
 import { useTheme } from "next-themes";
 import { Button } from "@/components/ui/button";
 import { useModal } from "./ModalProvider";
-import { isAuthenticated } from "@/lib/actions/auth.action";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { getCurrentUser } from "@/lib/actions/auth.action";
+import { redirect } from "next/navigation";
+import { useUser } from "./UserProvider";
 
 const Navbar = () => {
-    const { theme } = useTheme();
     const { setIsSignInOpen, setIsSignUpOpen } = useModal();
+    const { theme, resolvedTheme } = useTheme();
+    const { user } = useUser();
+    const currentTheme = theme === "system" ? resolvedTheme : theme;
 
-    const [isUserAuthenticated, setIsUserAuthenticated] = useState<
-        boolean | null
-    >(null);
-
-    useEffect(() => {
-        const checkAuth = async () => {
-            const authStatus = await isAuthenticated();
-            setIsUserAuthenticated(authStatus);
-        };
-
-        checkAuth();
-    }, []);
-
-    if (isUserAuthenticated === null) return null;
+    const logoSrc =
+        currentTheme === "dark" ? "/devlog-logo-white.png" : "/devlog-logo.png";
 
     return (
         <div className="max-w-[1200px] mx-auto h-14 flex items-center justify-between pr-6 pl-3">
             <Link href={"/"}>
                 <Image
-                    src={
-                        theme === "dark"
-                            ? "/devlog-logo-white.png"
-                            : "/devlog-logo.png"
-                    }
+                    src={logoSrc}
                     alt="DevLog Logo"
                     width={100}
                     height={50}
@@ -46,16 +33,28 @@ const Navbar = () => {
             </Link>
             <div className="flex gap-4">
                 <ThemeToggle />
-
-                {!isUserAuthenticated ? (
+                {user ? (
+                    <Button
+                        className="flex items-center gap-1 cursor-pointer shadow-none"
+                        onClick={() => redirect("/profile")}
+                    >
+                        <Image
+                            src={user.profilePicture}
+                            alt="profile"
+                            width={30}
+                            height={30}
+                            className="rounded-full object-cover"
+                        />
+                        <p>{user.name}</p>
+                    </Button>
+                ) : (
                     <>
                         <Button
-                            className="cursor-pointer"
+                            className="cursor-pointer text-[var(--foreground)] shadow-none"
                             onClick={() => setIsSignInOpen(true)}
                         >
                             Sign In
                         </Button>
-
                         <Button
                             className="cursor-pointer bg-[var(--button-bg)] dark:bg-[var(--button-bg)] text-[var(--background)]"
                             onClick={() => setIsSignUpOpen(true)}
@@ -63,10 +62,6 @@ const Navbar = () => {
                             Get Started
                         </Button>
                     </>
-                ) : (
-                    <Link href="/profile">
-                        <Button className="cursor-pointer">Profile</Button>
-                    </Link>
                 )}
             </div>
         </div>

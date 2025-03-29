@@ -15,14 +15,13 @@ import {
 } from "firebase/auth";
 import { auth } from "@/firebase/client";
 import { signInWithProvider } from "@/lib/actions/auth.action";
-import { useAuth } from "./AuthProvider";
+import { useUser } from "./UserProvider";
 
 const AuthModals = () => {
     const { isSignInOpen, setIsSignInOpen, isSignUpOpen, setIsSignUpOpen } =
         useModal();
-    const { setCurrentUser } = useAuth();
+    const { setUser, user } = useUser();
 
-    // 🔹 Google orqali tizimga kirish
     const handleGoogleSignIn = async () => {
         try {
             const provider = new GoogleAuthProvider();
@@ -31,9 +30,8 @@ const AuthModals = () => {
 
             const response = await signInWithProvider(idToken);
             if (response.success) {
-                console.log(response);
-
                 setIsSignInOpen(false);
+                setUser(user);
             } else {
                 console.error(response.message);
             }
@@ -52,6 +50,7 @@ const AuthModals = () => {
             const response = await signInWithProvider(idToken);
             if (response.success) {
                 setIsSignInOpen(false);
+                setIsSignUpOpen(false);
             } else {
                 console.error(response.message);
             }
@@ -93,7 +92,7 @@ const AuthModals = () => {
                                 setIsSignInOpen(false);
                                 setIsSignUpOpen(true);
                             }}
-                            className="px-1 text-[var(--success)] cursor-pointer text-sm"
+                            className="px-1 text-[var(--success)] cursor-pointer text-sm bg-transparent shadow-none"
                         >
                             Create one
                         </Button>
@@ -132,7 +131,7 @@ const AuthModals = () => {
                                 setIsSignUpOpen(false);
                                 setIsSignInOpen(true);
                             }}
-                            className="px-1 text-[var(--success)] cursor-pointer text-sm"
+                            className="px-1 text-[var(--success)] cursor-pointer text-sm shadow-none"
                         >
                             Sign in
                         </Button>

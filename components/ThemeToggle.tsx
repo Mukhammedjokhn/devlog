@@ -12,7 +12,7 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-export function ThemeToggle() {
+function ThemeToggle() {
     const { theme, setTheme } = useTheme();
     const [mounted, setMounted] = React.useState(false);
 
@@ -65,3 +65,5 @@ export function ThemeToggle() {
         </DropdownMenu>
     );
 }
+
+export default ThemeToggle;

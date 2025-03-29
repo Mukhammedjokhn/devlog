@@ -3,7 +3,7 @@ import { Poppins } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { ModalProvider } from "@/components/ModalProvider";
-import { AuthProvider } from "@/components/AuthProvider";
+import { UserProvider } from "@/components/UserProvider";
 
 const poppins = Poppins({
     variable: "--font-poppins",
@@ -29,7 +29,7 @@ export default function RootLayout({
             >
                 <ThemeProvider>
                     <ModalProvider>
-                        <AuthProvider>{children}</AuthProvider>
+                        <UserProvider>{children}</UserProvider>
                     </ModalProvider>
                 </ThemeProvider>
             </body>
