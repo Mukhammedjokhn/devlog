@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 import "./globals.css";
-import { ThemeProvider } from "@/components/ThemeProvide";
+import { ThemeProvider } from "@/components/ThemeProvider";
+import { ModalProvider } from "@/components/ModalProvider";
+import { AuthProvider } from "@/components/AuthProvider";
 
 const poppins = Poppins({
     variable: "--font-poppins",
@@ -25,7 +27,11 @@ export default function RootLayout({
             <body
                 className={`bg-[var(--background)] text-[var(--foreground)] dark:text-[var(--foreground)] dark:bg-[var(--background)] ${poppins.variable} antialiased transition-colors duration-100`}
             >
-                <ThemeProvider>{children}</ThemeProvider>
+                <ThemeProvider>
+                    <ModalProvider>
+                        <AuthProvider>{children}</AuthProvider>
+                    </ModalProvider>
+                </ThemeProvider>
             </body>
         </html>
     );

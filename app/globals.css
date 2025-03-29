@@ -12,6 +12,9 @@
     --border-color: #666;
     --background: #f3f3f3;
     --foreground: #111;
+    --button-bg: #111;
+    --success: #4caf50;
+    --error: #f44336;
 }
 
 .dark {
@@ -19,6 +22,7 @@
     --foreground: #f3f3f3;
     --border-color: #333;
     --bg-pattern: url("/pattern.png");
+    --button-bg: #f1f1f1;
 }
 
 body {
